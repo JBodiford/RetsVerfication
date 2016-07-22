@@ -26,22 +26,10 @@ namespace RetsVerification
         public string RetsLoginURL { get; set; }
         public string RetsUserID { get; set; }
         public string RetsPassword { get; set; }
+        public string RetsUserAgent { get; set; }
+        public string RetsUserAgentPassword { get; set; }
         public double RetsVersion { get; set; }
 
-    }
-
-    public class ListingKeys
-    {
-        public long ListingID;
-        public string ListingMLS;
-        public string RetsKey;
-
-        public ListingKeys(long listingID, string listingMLS, string retsKey)
-        {
-            ListingID = listingID;
-            ListingMLS = listingMLS;
-            RetsKey = retsKey;
-        }
     }
 
     //RETS-Response Code 
@@ -52,41 +40,7 @@ namespace RetsVerification
         Error = 20000
     }
 
-    public class RetsHelper : IDisposable
-    {
-        private RetsSession session;
-        private int totalProcessed = 0;
-        private EncodingType encodingType = EncodingType.RETS_XML_DEFAULT_ENCODING;
-        private bool logging = false;
-
-        //RETS session connection
-        public RetsSession Session
-        {
-            get { return session; }
-            set { session = value; }
-        }
-
-        public int TotalProcessed
-        {
-            get { return totalProcessed; }
-            set { totalProcessed = value; }
-        }
-
-        public EncodingType EncodingType
-        {
-            get { return encodingType; }
-            set { encodingType = value; }
-        }
-
-        public bool Logging
-        {
-            get { return logging; }
-            set { logging = value; }
-        }
-
-        
-    }
-
+    
      
     class Program
     {
@@ -94,61 +48,55 @@ namespace RetsVerification
         {
             string json = File.ReadAllText(@"c:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsCredentials.json");
             var users = JsonConvert.DeserializeObject<List<RootObject>>(json);
-            foreach (var item in users)
-            {
-                item.RetsLoginURL = new RetsLoginURL:
+           try
+           {
+                foreach (var user in users)
+                {
+                   var session = new RetsSession(user.RetsLoginURL);
+                  
+                   session.SetUserAgent(user.RetsUserAgent);
+                   session.SetRetsVersion(RetsVersion.RETS_1_5);
+                   
+                       if (user.RetsVersion == 1.7)
+                       {
+                           session.SetRetsVersion(RetsVersion.RETS_1_7);
+                       } else if(user.RetsVersion == 1.72)
+                       {
+                          session.SetRetsVersion(RetsVersion.RETS_1_7_2);
+                       } else if(user.RetsVersion == 1.8)
+                       {
+                          session.SetRetsVersion(RetsVersion.RETS_1_8);
+                       }
 
+                   if (String.IsNullOrEmpty(user.RetsUserAgent))
+                           user.RetsUserAgent = "BoomTown/1.1";
+                           session.SetUserAgent(user.RetsUserAgent); //check this!
 
-                public RetsHelper(RetsLoginURL, RetsUserID, RetsPassword)
-                    {
-                        this.Session = new RetsSession(RetsLoginURL);
-                        this.Session.LoggerDelegate = new RetsHttpLogger.Delegate(logRETS)
-;
-                        try
-                        {
-                            bool loginResult = this.Session.Login(RetsUserID,RetsPassword);
+                   if (!String.IsNullOrEmpty(user.RetsUserAgentPassword))
+                       session.SetUserAgentPassword(user.RetsUserAgentPassword);
+                   bool loginResult = session.Login(user.RetsUserID, user.RetsPassword);
 
-                            if (!loginResult)
-                            {
-                                Console.WriteLine("\nLogin to RETS Failed at " + DateTime.Now);
-                                Console.ReadLine();
-                            }
-                            else
-                            {
-                                Console.WriteLine("\nLogin to RETS Succeeded at " + DateTime.Now);
-                                Console.ReadLine();
-                            }
-                            //switch (users[x].RetsVersion)
-                            //{
-                            //    case "1.5":
-                            //        this.Session.SetRetsVersion(RetsVersion.RETS_1_5);
-                            //        break;
-                            //    case "1.7":
-                            //        this.Session.SetRetsVersion(RetsVersion.RETS_1_7);
-                            //        break;
-                            //    case "1.72":
-                            //        this.Session.SetRetsVersion(RetsVersion.RETS_1_7_2);
-                            //        break;
-                            //    case "1.8":
-                            //        this.Session.SetRetsVersion(RetsVersion.RETS_1_8);
-                            //        break;                            
-                            //}
-                        }
-                        catch (Exception ex)
-                        {
-                           Console.WriteLine(ex.Message);
-                        }
-                        
-                    }
-                //Console.WriteLine("{0} {1} {2}\n", item.TenantID, item.BoardID, item.RetsAssociatedUser);
-                //Console.ReadLine();
-            }
+                   if (!loginResult)
+                   {
+                       Console.WriteLine(session.GetReplyCode());
+                       Console.WriteLine("\nLogin to {0}'s RETS Failed at " + DateTime.Now, user.RetsAssociatedUser);
+                       Console.ReadLine();
+                   }
+                   else
+                   {
+                       Console.WriteLine("\nLogin to {0}'s RETS Succeeded at " + DateTime.Now, user.RetsAssociatedUser);
+                       Console.ReadLine();
+                   }           
+
+                    //Console.WriteLine("{0} {1} {2}\n", item.TenantID, item.BoardID, item.RetsAssociatedUser);
+                    //Console.ReadLine();
+                }
+           } 
+           catch (Exception ex)
+	        {
+	            Console.WriteLine(ex.Message);
+	        }
         }
-        
-                
-
-
-
      }
 
 

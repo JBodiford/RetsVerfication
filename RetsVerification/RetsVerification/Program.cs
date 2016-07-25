@@ -2,12 +2,14 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Collections.Specialized;
 using System.Data;
 using System.Data.SqlClient;
 using System.Linq;
 using System.IO;
 using System.Text;
 using System.Threading.Tasks;
+using System.Web;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using librets;
@@ -29,6 +31,7 @@ namespace RetsVerification
         public string RetsUserAgent { get; set; }
         public string RetsUserAgentPassword { get; set; }
         public double RetsVersion { get; set; }
+        public string QueryString { get; set; }
 
     }
 
@@ -53,8 +56,7 @@ namespace RetsVerification
                 foreach (var user in users)
                 {
                    var session = new RetsSession(user.RetsLoginURL);
-                  
-                   session.SetUserAgent(user.RetsUserAgent);
+                      
                    session.SetRetsVersion(RetsVersion.RETS_1_5);
                    
                        if (user.RetsVersion == 1.7)
@@ -67,29 +69,66 @@ namespace RetsVerification
                        {
                           session.SetRetsVersion(RetsVersion.RETS_1_8);
                        }
-
-                   if (String.IsNullOrEmpty(user.RetsUserAgent))
-                           user.RetsUserAgent = "BoomTown/1.1";
-                           session.SetUserAgent(user.RetsUserAgent); //check this!
+                       
+                    if (user.RetsUserAgent == null)
+                       {
+                           session.SetUserAgent("BoomTown/1.1");
+                       }
+                       else
+                       {
+                           session.SetUserAgent(user.RetsUserAgent);
+                       }
 
                    if (!String.IsNullOrEmpty(user.RetsUserAgentPassword))
                        session.SetUserAgentPassword(user.RetsUserAgentPassword);
+                   
                    bool loginResult = session.Login(user.RetsUserID, user.RetsPassword);
+                       if (!loginResult)
+                       {
+                          //Console.WriteLine(session.GetReplyCode());
+                           Console.WriteLine("\nLogin to {0}'s RETS Failed at " + DateTime.Now, user.RetsAssociatedUser);
+                           Console.ReadLine();
+                       }
+                       else
+                       {
+                           Console.WriteLine("\nLogin to {0}'s RETS Succeeded at " + DateTime.Now, user.RetsAssociatedUser);
+                           Console.ReadLine();
+                           
+                           NameValueCollection queryVals = System.Web.HttpUtility.ParseQueryString(user.QueryString);
+                           string query = queryVals["Query"];
+                           
+                           using (SearchRequest search = session.CreateSearchRequest(queryVals["SearchType"], queryVals["Class"], query))
+                           {
+                               search.SetQueryType(SearchRequest.QueryType.DMQL2);
+                               search.SetStandardNames(false);
+                               search.SetLimit(10);
 
-                   if (!loginResult)
-                   {
-                       Console.WriteLine(session.GetReplyCode());
-                       Console.WriteLine("\nLogin to {0}'s RETS Failed at " + DateTime.Now, user.RetsAssociatedUser);
-                       Console.ReadLine();
-                   }
-                   else
-                   {
-                       Console.WriteLine("\nLogin to {0}'s RETS Succeeded at " + DateTime.Now, user.RetsAssociatedUser);
-                       Console.ReadLine();
-                   }           
+                               if (queryVals["Select"] != null)
+                                   search.SetSelect(queryVals["Select"]);
+                               SearchResultSet results = session.Search(search);
+                               int replyCode = results.GetReplyCode();
+                               // no records found
+                               if (replyCode == (int)RetsSearchReplyCode.NoResults)
+                                    Console.WriteLine(results);
+                                    Console.ReadLine();
 
-                    //Console.WriteLine("{0} {1} {2}\n", item.TenantID, item.BoardID, item.RetsAssociatedUser);
-                    //Console.ReadLine();
+                               // other rets errors
+                               if (replyCode > (int)RetsSearchReplyCode.Error)
+                                   throw new Exception(String.Format("{0}: {1} {2}",
+                                       replyCode,
+                                       results.GetReplyText(),
+                                       search.GetQueryString()));
+
+                                   Console.WriteLine(results);
+                                   Console.ReadLine();
+                               
+                           }
+                           Console.ReadLine();
+                       }
+                     
+                   
+
+                   session.Logout();
                 }
            } 
            catch (Exception ex)

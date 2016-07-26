@@ -7,3 +7,5 @@ C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerificatio
 C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.exe
 C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.pdb
 C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.csprojResolveAssemblyReference.cache
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\log4net.dll
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\log4net.xml

@@ -14,8 +14,9 @@ using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using librets;
 
-
-
+//log4net
+//Get DateTime
+//Pass DateTime
 
 namespace RetsVerification
 {
@@ -42,11 +43,12 @@ namespace RetsVerification
         NoResults = 20201,
         Error = 20000
     }
-
      
     class Program
     {
-  
+        private static readonly log4net.ILog log =
+            log4net.LogManager.GetLogger(System.Reflection.MethodBase.GetCurrentMethod().DeclaringType);
+
         static void Main(string[] args)
         {
             string json = File.ReadAllText(@"c:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsCredentials.json");
@@ -125,11 +127,13 @@ namespace RetsVerification
                                        }
                                        foreach (string column in columns)
                                        {
-                                           Console.WriteLine(column + ": " + results.GetString(column));
+                                           log.Info(user.TenantID + " " + user.RetsAssociatedUser + " "+ column + ": " + results.GetString(column));
                                        }
                                        Console.WriteLine();
                                    }
-                                   session.Logout();
+                                   LogoutResponse logout = session.Logout();
+                                   Console.WriteLine("Logout message: " + logout.GetLogoutMessage());
+                                   Console.WriteLine("Connect time: " + logout.GetConnectTime());
                                // no records found
                                }
                                else if (replyCode == (int)RetsSearchReplyCode.NoResults)
@@ -150,7 +154,6 @@ namespace RetsVerification
                            }
                            Console.ReadLine();
                        }
-
                    
                 }
            } 

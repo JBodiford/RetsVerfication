@@ -1,0 +1,11 @@
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\librets-pinvoke.dll
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\RetsVerification.exe.config
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\RetsVerification.exe
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\RetsVerification.pdb
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\librets-dotnet.dll
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\log4net.dll
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\Newtonsoft.Json.dll
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\log4net.xml
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\BoomTown.RetsVerification.csprojResolveAssemblyReference.cache
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.exe
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.pdb

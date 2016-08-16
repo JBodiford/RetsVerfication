@@ -43,7 +43,7 @@ namespace RetsVerification
 
         static void Main(string[] args)
         {
-            string json = File.ReadAllText(@"c:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsCredentials.json");
+            string json = File.ReadAllText(@"C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\RetsCredentials.json");
             var users = JsonConvert.DeserializeObject<List<RootObject>>(json);
            try
            {

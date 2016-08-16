@@ -21,6 +21,7 @@
     <DefineConstants>DEBUG;TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -30,10 +31,12 @@
     <DefineConstants>TRACE</DefineConstants>
     <ErrorReport>prompt</ErrorReport>
     <WarningLevel>4</WarningLevel>
+    <Prefer32Bit>false</Prefer32Bit>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="librets-dotnet">
-      <HintPath>..\packages\libRETS-x86.1.6.1\lib\net\librets-dotnet.dll</HintPath>
+    <Reference Include="librets-dotnet, Version=0.0.0.0, Culture=neutral, processorArchitecture=AMD64">
+      <HintPath>..\packages\libRETS-x64.1.6.2\lib\net\librets-dotnet.dll</HintPath>
+      <Private>True</Private>
     </Reference>
     <Reference Include="log4net">
       <HintPath>..\packages\log4net.2.0.5\lib\net45-full\log4net.dll</HintPath>
@@ -56,12 +59,13 @@
   <ItemGroup>
     <None Include="App.config" />
     <None Include="packages.config" />
+    <None Include="RetsCredentials.json" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Service References\" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="..\packages\libRETS-x86.1.6.1\lib\native\librets-pinvoke.dll">
+    <None Include="..\packages\libRETS-x64.1.6.2\lib\native\librets-pinvoke.dll">
       <Link>librets-pinvoke.dll</Link>
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>

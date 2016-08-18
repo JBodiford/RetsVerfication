@@ -9,3 +9,4 @@ C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerificatio
 C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\BoomTown.RetsVerification.csprojResolveAssemblyReference.cache
 C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.exe
 C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\obj\Debug\RetsVerification.pdb
+C:\Users\jbodiford\Documents\retsLoginProject\C#RetsVerification\RetsVerification\RetsVerification\bin\Debug\RetsCredentials.json
